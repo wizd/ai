@@ -9,3 +9,4 @@ export { createMCPClient as experimental_createMCPClient } from './mcp/mcp-clien
 export type { MCPTransport } from './mcp/mcp-transport';
 export { tool } from './tool';
 export type { CoreTool, Tool, ToolExecutionOptions } from './tool';
+export { MCPClient } from './mcp/mcp-client';

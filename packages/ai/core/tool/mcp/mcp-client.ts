@@ -69,7 +69,7 @@ export async function createMCPClient(
  * - Session management (when passing a sessionId to an instance of the Streamable HTTP transport)
  * - Resumable SSE streams
  */
-class MCPClient {
+export class MCPClient {
   private transport: MCPTransport;
   private onUncaughtError?: (error: unknown) => void;
   private clientInfo: ClientConfiguration;

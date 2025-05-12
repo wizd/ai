@@ -1,6 +1,7 @@
 import { MCPClientError } from '../../../errors';
 import { JSONRPCMessage } from './json-rpc-message';
 import { SseMCPTransport } from './mcp-sse-transport';
+import { WebSocketMCPTransport } from './mcp-ws-transport';
 
 /**
  * Transport interface for MCP (Model Context Protocol) communication.
@@ -40,7 +41,7 @@ export interface MCPTransport {
 }
 
 export type MCPTransportConfig = {
-  type: 'sse';
+  type: 'sse' | 'ws';
 
   /**
    * The URL of the MCP server.
@@ -54,14 +55,16 @@ export type MCPTransportConfig = {
 };
 
 export function createMcpTransport(config: MCPTransportConfig): MCPTransport {
-  if (config.type !== 'sse') {
-    throw new MCPClientError({
-      message:
-        'Unsupported or invalid transport configuration. If you are using a custom transport, make sure it implements the MCPTransport interface.',
-    });
+  if (config.type === 'sse') {
+    return new SseMCPTransport(config);
+  } else if (config.type === 'ws') {
+    return new WebSocketMCPTransport(config);
   }
 
-  return new SseMCPTransport(config);
+  throw new MCPClientError({
+    message:
+      'Unsupported or invalid transport configuration. If you are using a custom transport, make sure it implements the MCPTransport interface.',
+  });
 }
 
 export function isCustomMcpTransport(
